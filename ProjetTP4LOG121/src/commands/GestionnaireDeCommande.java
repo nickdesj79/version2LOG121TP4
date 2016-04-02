@@ -17,71 +17,43 @@ import java.util.Stack;
 /**
  * 
  */
-public class CommandManager
+public class GestionnaireDeCommande
 {
 	
-	private static final CommandManager instance = new CommandManager();
+	private static final GestionnaireDeCommande instance = new GestionnaireDeCommande();
 	
-	/**
-	 * 
-	 */
-	public static CommandManager getInstance() {
+	public static GestionnaireDeCommande getInstance() {
 		return instance;
 	}
 	
-	/**
-	 * 
-	 */
-	private final Stack<Command> commandsDone = new Stack<Command>();
+	private final Stack<Commande> commandsDone = new Stack<Commande>();
 	
-	/**
-	 * 
-	 */
-	private final Stack<Command> commandsUndone = new Stack<Command>();
+	private final Stack<Commande> commandsUndone = new Stack<Commande>();
 	
-	/**
-	 * 
-	 */
-	public CommandManager(){
-		
-	}
-	
-	public void execute(Command command) {
+	public void execute(Commande command) {
 		command.execute();
 		commandsDone.push(command);
 	}
 	
-	/**
-	 * 
-	 */
 	public boolean canUndo() {
 		return !commandsDone.empty();
 	}
 	
-	/**
-	 * 
-	 */
 	public boolean canRedo() {
 		return !commandsUndone.empty();
 	}
 	
-	/**
-	 * 
-	 */
 	public void undo() {
 		if(!commandsDone.empty()) {
-			Command lastCommand = commandsDone.pop();
+			Commande lastCommand = commandsDone.pop();
 			lastCommand.unexecute();
 			commandsUndone.push(lastCommand);
 		}
 	}
 	
-	/**
-	 * 
-	 */
 	public void redo() {
 		if(!commandsUndone.empty()) {
-			Command lastCommand = commandsUndone.pop();
+			Commande lastCommand = commandsUndone.pop();
 			lastCommand.execute();
 			commandsDone.push(lastCommand);
 		}

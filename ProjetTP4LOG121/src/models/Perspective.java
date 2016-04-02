@@ -19,7 +19,7 @@ import principale.Coordonnee;
 /**
  * 
  */
-public class Perspective extends Observable implements Model {
+public class Perspective extends Observable implements Modele {
 	
 	private final Coordonnee coordonnee ;
 	
@@ -59,11 +59,11 @@ public class Perspective extends Observable implements Model {
 		return coordonnee.copy();
 	}
 
-	public ModelState saveState() {
+	public EtatDuModele sauvegarderEtat() {
 		return new PerspectiveModelState();
 	}
 
-	public void restoreState(ModelState state) {
+	public void restaurerEtat(EtatDuModele state) {
 		if(state instanceof PerspectiveModelState) {
 			PerspectiveModelState perspectiveModelState = (PerspectiveModelState) state;
 			perspectiveModelState.restore(this);
@@ -72,7 +72,7 @@ public class Perspective extends Observable implements Model {
 		}
 	}
 	
-	public String serialize() {
+	public String enregistrer() {
 		return Integer.toString(coordonnee.getX())
 				.concat(":")
 				.concat(Integer.toString(coordonnee.getY()))
@@ -80,7 +80,7 @@ public class Perspective extends Observable implements Model {
 				.concat(Float.toString(zoom));
 	}
 	
-	public void unserialize(String state) throws Exception {
+	public void enleverEnregistrement(String state) throws Exception {
 		String[] stateArray = state.split(":");
 		if(stateArray.length != 3) {
 			throw new Exception("Can't serialize Perspective: invalid state." + stateArray.length);
@@ -93,7 +93,7 @@ public class Perspective extends Observable implements Model {
 		}
 	}
 	
-	private class PerspectiveModelState implements ModelState {
+	private class PerspectiveModelState implements EtatDuModele {
 
 		private int savedXPosition;
 		private int savedYPosition;

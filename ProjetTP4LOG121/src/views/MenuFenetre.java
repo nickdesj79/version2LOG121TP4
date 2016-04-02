@@ -22,29 +22,25 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import principale.Controller;
-import principale.LangueConfig;
+import principale.Controlleur;
 
 
 /**
  * Crée le menu de la fenêtre de l'application.
  */
+@SuppressWarnings("serial")
 public class MenuFenetre extends JMenuBar {
 	
-	private static final long serialVersionUID = 1536336192561843187L;
 	
-	//private static final int DELAI_QUITTER_MSEC = 200;
-	
-	private final Controller controller;
+	private final Controlleur controller;
 	
 	/**
 	 * Constructeur
 	 */
-	public MenuFenetre(Controller controller) {
+	public MenuFenetre(Controlleur controller) {
 		this.controller = controller;
 		addMenuFichier();
 		addMenuEdit();
-		addMenuAide();
 	}
 	
 	/**
@@ -54,10 +50,10 @@ public class MenuFenetre extends JMenuBar {
 		
 		final JFileChooser dialog = new JFileChooser();
 		
-		Dropdown dropdown = new Dropdown("app.frame.menus.file");
+		Dropdown dropdown = new Dropdown("Fichier");
 		add(dropdown.getMenu());
 		
-		dropdown.addItem(new MenuItem("charge") {
+		dropdown.addItem(new MenuItem("Load image") {
 			
 			public KeyStroke shortcut() {
 				return KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK);
@@ -70,13 +66,12 @@ public class MenuFenetre extends JMenuBar {
 						controller.loadImage(dialog.getSelectedFile());
 					} catch (Exception exception) {
 						exception.printStackTrace();
-						JOptionPane.showMessageDialog(MenuFenetre.this.getParent(), "Failed to open file.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
 		});
 		
-		dropdown.addItem(new MenuItem("import") {
+		dropdown.addItem(new MenuItem("Importer") {
 			
 			public KeyStroke shortcut() {
 				return KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK);
@@ -89,13 +84,12 @@ public class MenuFenetre extends JMenuBar {
 						controller.open(dialog.getSelectedFile());
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(MenuFenetre.this.getParent(), "Failed to open file.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
 		});
 		
-		dropdown.addItem(new MenuItem("save") {
+		dropdown.addItem(new MenuItem("Sauvegarder") {
 			
 			public KeyStroke shortcut() {
 				return KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK);
@@ -105,15 +99,14 @@ public class MenuFenetre extends JMenuBar {
 				int result = dialog.showSaveDialog(MenuFenetre.this.getParent());
 				if(result == JFileChooser.APPROVE_OPTION) {
 					try {
-						controller.save(dialog.getSelectedFile());
+						controller.sauvegarder(dialog.getSelectedFile());
 					} catch (Exception e) {
 						e.printStackTrace();
-						JOptionPane.showMessageDialog(MenuFenetre.this.getParent(), "Failed to save file.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
 		});
-		dropdown.addItem(new MenuItem("quitter") {
+		dropdown.addItem(new MenuItem("Quitter") {
 			
 			public KeyStroke shortcut() {
 				return KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK);
@@ -134,10 +127,10 @@ public class MenuFenetre extends JMenuBar {
 	 * Créer le menu "Edit".
 	 */
 	protected void addMenuEdit() {
-		Dropdown dropdown = new Dropdown("app.frame.menus.edit");
+		Dropdown dropdown = new Dropdown("Editer");
 		add(dropdown.getMenu());
 		
-		dropdown.addItem(new MenuItem("defaire") {
+		dropdown.addItem(new MenuItem("Undo") {
 			
 			public KeyStroke shortcut() {
 				return KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK);
@@ -148,7 +141,7 @@ public class MenuFenetre extends JMenuBar {
 			}
 		});
 		
-		dropdown.addItem(new MenuItem("refaire") {
+		dropdown.addItem(new MenuItem("Redo") {
 			
 			public KeyStroke shortcut() {
 				return KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK);
@@ -160,41 +153,22 @@ public class MenuFenetre extends JMenuBar {
 		});
 	}
 	
-	/**
-	 * Créer le menu "Help".
-	 */
-	private void addMenuAide() {
-		Dropdown dropdown = new Dropdown("app.frame.menus.help");
-		add(dropdown.getMenu());
-		
-		dropdown.addItem(new MenuItem("about") {
-			
-			public void actionPerformed(ActionEvent event) {
-				JOptionPane.showMessageDialog(null,
-						LangueConfig.getResource("app.frame.dialog.about"),
-						LangueConfig.getResource("app.frame.menus.help.about"),
-						JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
-	}
-	
 	private class Dropdown {
 		
 		private JMenu menu;
-		private String menuName;
+		private String nom_menu;
 		
 		public Dropdown(String name) {
-			menuName = name + ".";
-			menu = new JMenu(LangueConfig.getResource(menuName + "title"));
+			this.nom_menu = name;
+			menu = new JMenu(name);
 		}
 		
 		public void addItem(MenuItem itemData) {
-			String text = LangueConfig.getResource(menuName + itemData.getName());
-			JMenuItem menuItem = new JMenuItem(text);
+			JMenuItem menuItem = new JMenuItem(itemData.getName());
 			menuItem.addActionListener(itemData);
-			KeyStroke shortcut = itemData.shortcut();
-			if(shortcut != null) {
-				menuItem.setAccelerator(shortcut);
+			KeyStroke raccourcis = itemData.shortcut();
+			if(raccourcis != null) {
+				menuItem.setAccelerator(raccourcis);
 			}
 			menu.add(menuItem);
 		}

@@ -21,19 +21,13 @@ import models.Perspective;
 /**
  * 
  */
-public class PerspectiveView extends ImageView
+public class VueDynamique extends VueStatique
 {
 	
 	private static final long serialVersionUID = 13L;
 
-	/**
-	 * 
-	 */
 	private Coordonnee position;
 	
-	/**
-	 * 
-	 */
 	private float zoom = 1;
 	
 	/**
@@ -43,7 +37,7 @@ public class PerspectiveView extends ImageView
 	 * @param uneWidth
 	 * @param uneHeight
 	 */
-	public PerspectiveView(int unePosX, int unePosY, int uneWidth, int uneHeight) {
+	public VueDynamique(int unePosX, int unePosY, int uneWidth, int uneHeight) {
 		super(unePosX, unePosY, uneWidth, uneHeight);
 		position = new Coordonnee(0, 0);
 	}

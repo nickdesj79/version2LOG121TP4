@@ -24,14 +24,14 @@ import javax.swing.JPopupMenu;
 
 import commands.*;
 import models.*;
-import views.ImageView;
-import views.PerspectiveView;
+import views.VueStatique;
+import views.VueDynamique;
 
 
 /**
  * 
  */
-public class Controller
+public class Controlleur
 {
 	
 	/**
@@ -48,7 +48,7 @@ public class Controller
 	 * Constructeur du controlleur
 	 * @param nbPerspective Le nombre de perspective qu'il y aura dans l'application
 	 */
-	public Controller(int nbPerspective){
+	public Controlleur(int nbPerspective){
 		imageModel = new ImageModel();
 		perspective = new Perspective();
 	}
@@ -57,20 +57,20 @@ public class Controller
 	 * Ajoute un Observer a une vue
 	 * @param view La vue à ajouter l'observer
 	 * */
-	public void observeImage(ImageView view) {
+	public void observeImage(VueStatique view) {
 		imageModel.addObserver(view);
 	}
 	
 	/**
 	 * Ajoute un Observer a une perspective et les listeners appropriés
-	 * @param view La vue à ajouter l'observer
+	 * @param vue La vue à ajouter l'observer
 	 * */
-	public void observePerspective(PerspectiveView view) {
-		perspective.addObserver(view);
+	public void observePerspective(VueDynamique vue) {
+		perspective.addObserver(vue);
 		MouseControl mouseControl = new MouseControl(perspective);
-		view.addMouseListener(mouseControl);
-		view.addMouseMotionListener(mouseControl);
-		view.addMouseWheelListener(mouseControl);
+		vue.addMouseListener(mouseControl);
+		vue.addMouseMotionListener(mouseControl);
+		vue.addMouseWheelListener(mouseControl);
 	}
 	
 	/**
@@ -78,14 +78,14 @@ public class Controller
 	 * @param L'image a charger
 	 */
 	public void loadImage(File file) throws IOException {
-		imageModel.load(file);
+		imageModel.charger(file);
 	}
 	
 	/**
 	 * Sert a canceller la commande fait précédemment
 	 */
 	public void undo() {
-		CommandManager commandManager = CommandManager.getInstance();
+		GestionnaireDeCommande commandManager = GestionnaireDeCommande.getInstance();
 		if(commandManager.canUndo()) {
 			commandManager.undo();
 		}
@@ -95,7 +95,7 @@ public class Controller
 	 * Sert a refaire la commance cancellée précédemment
 	 */
 	public void redo() {
-		CommandManager commandManager = CommandManager.getInstance();
+		GestionnaireDeCommande commandManager = GestionnaireDeCommande.getInstance();
 		if(commandManager.canRedo()) {
 			commandManager.redo();
 		}
@@ -104,30 +104,30 @@ public class Controller
 	/**
 	 * Copy les paramètres de la photo dans le ClipBoard
 	 */
-	public void copy() {
-		CopyCommand copy = new CopyCommand(perspective);
-		CommandManager.getInstance().execute(copy);
+	public void copier() {
+		CommandeCopier copy = new CommandeCopier(perspective);
+		GestionnaireDeCommande.getInstance().execute(copy);
 	}
 	
 	/**
 	 * Colle les paramètres de la photo dans le ClipBoard
 	 */
-	public void paste() {
-		PasteCommand paste = new PasteCommand(perspective);
-		CommandManager.getInstance().execute(paste);
+	public void coller() {
+		CommandeColler paste = new CommandeColler(perspective);
+		GestionnaireDeCommande.getInstance().execute(paste);
 	}
 	
 	public void pasteEchelle() {
-		PasteEchelle pasteEchelle = new PasteEchelle(perspective);
-		CommandManager.getInstance().execute(pasteEchelle);
+		UndoRedo pasteEchelle = new UndoRedo(perspective);
+		GestionnaireDeCommande.getInstance().execute(pasteEchelle);
 	}
 	
 	/**
 	 * Permet d'éffectuer la transtlation de la photo
 	 */
 	public void translate(Coordonnee distance) {
-		TranslationCommand translation = new TranslationCommand(perspective, distance);
-		CommandManager commandManager = CommandManager.getInstance();
+		CommandeTranslation translation = new CommandeTranslation(perspective, distance);
+		GestionnaireDeCommande commandManager = GestionnaireDeCommande.getInstance();
 		commandManager.execute(translation);
 	}
 	
@@ -136,8 +136,8 @@ public class Controller
 	 */
 	public void zoom(float unZoom) {
 		//Perspective perspective = perspectives.get(perspectiveIndex);
-		ZoomCommand zoom = new ZoomCommand(perspective, unZoom);
-		CommandManager commandManager = CommandManager.getInstance();
+		CommandeZoom zoom = new CommandeZoom(perspective, unZoom);
+		GestionnaireDeCommande commandManager = GestionnaireDeCommande.getInstance();
 		commandManager.execute(zoom);
 	}
 	
@@ -145,9 +145,9 @@ public class Controller
 	 * Permet de sauvegarder l'état de la photo pour une utilisation ultérieure
 	 * @throws IOException 
 	 */
-	public void save(File file) throws IOException {
-		String content = imageModel.serialize();
-		content += ";" + perspective.serialize();
+	public void sauvegarder(File file) throws IOException {
+		String content = imageModel.enregistrer();
+		content += ";" + perspective.enregistrer();
 		FileAccess.writeFile(file, content);
 	}
 	
@@ -162,8 +162,8 @@ public class Controller
 		if(contentParts.length != 2) {
 			throw new Exception("Invalid file format");
 		}
-		imageModel.unserialize(contentParts[0]);
-		perspective.unserialize(contentParts[1]);
+		imageModel.enleverEnregistrement(contentParts[0]);
+		perspective.enleverEnregistrement(contentParts[1]);
 	}
 	
 	private class MouseControl extends MouseAdapter {
@@ -200,7 +200,7 @@ public class Controller
 				JMenuItem copy = new JMenuItem("Copy");
 				copy.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
-						copy();
+						copier();
 					}
 				});
 				popMenu.add(copy);
@@ -208,7 +208,7 @@ public class Controller
 				JMenuItem paste = new JMenuItem("Paste");
 				paste.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
-						paste();
+						coller();
 					}
 				});
 				popMenu.add(paste);
@@ -252,8 +252,8 @@ public class Controller
 		}
 		
 		public void mouseDragged(MouseEvent event) {
-			if(event.getSource() instanceof PerspectiveView) {
-				PerspectiveView view = (PerspectiveView) event.getSource();
+			if(event.getSource() instanceof VueDynamique) {
+				VueDynamique view = (VueDynamique) event.getSource();
 				if(translationBegin != null) {
 					Coordonnee currentPosition = new Coordonnee(event.getPoint());
 					Coordonnee dragDistance = currentPosition.diff(translationBegin);

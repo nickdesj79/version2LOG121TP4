@@ -12,15 +12,15 @@ Historique des modifications
 package commands;
 
 import principale.ClipBoard;
-import models.Model;
-import models.ModelState;
+import models.Modele;
+import models.EtatDuModele;
 
-public class PasteEchelle implements Command {
+public class UndoRedo implements Commande {
 	
-	private Model model;
-	private ModelState previousState;
+	private Modele model;
+	private EtatDuModele previousState;
 	
-	public PasteEchelle(Model model){
+	public UndoRedo(Modele model){
 		this.model = model;		
 	}
 	
@@ -28,10 +28,10 @@ public class PasteEchelle implements Command {
 	 * Ceci vas refaire la prochaine commande
 	 */
 	public void execute() {
-		ModelState stateInClipBoard = ClipBoard.getInstance().getContent();
+		EtatDuModele stateInClipBoard = ClipBoard.getInstance().getContent();
 		if(stateInClipBoard != null) {
-			previousState = model.saveState();
-			model.restoreState(stateInClipBoard);
+			previousState = model.sauvegarderEtat();
+			model.restaurerEtat(stateInClipBoard);
 		}
 	}
 	
@@ -39,9 +39,9 @@ public class PasteEchelle implements Command {
 	 * Ceci annule la dernière commande
 	 */
 	public void unexecute(){
-		ModelState stateInClipBoard = ClipBoard.getInstance().getContent();
+		EtatDuModele stateInClipBoard = ClipBoard.getInstance().getContent();
 		if(stateInClipBoard != null) {
-			model.restoreState(previousState);
+			model.restaurerEtat(previousState);
 		}
 	}
 	

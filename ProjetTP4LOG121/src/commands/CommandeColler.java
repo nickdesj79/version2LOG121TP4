@@ -1,7 +1,7 @@
 /******************************************************
 Cours:  LOG121
 Projet: Laboratoire 4
-Nom du fichier: CopyManager.java
+Nom du fichier: PasteManager.java
 Date créé: 2013-11-22
  *******************************************************
 Historique des modifications
@@ -12,39 +12,42 @@ Historique des modifications
 package commands;
 
 import principale.ClipBoard;
-import models.Model;
-import models.ModelState;
+import models.Modele;
+import models.EtatDuModele;
+
 
 /**
  * 
  */
-public class CopyCommand implements Command {
-	
-	private Model model;
-	private ModelState previousState;
+public class CommandeColler implements Commande {
+
+	private Modele modele;
+	private EtatDuModele previousState;
 	
 	/**
 	 * 
 	 */
-	public CopyCommand(Model model){
-		this.model = model;
+	public CommandeColler(Modele model){
+		this.modele = model;
 	}
-	
 
 	/**
 	 * 
 	 */
 	public void execute() {
-		ClipBoard clipBoard = ClipBoard.getInstance();
-		
-		previousState = clipBoard.getContent();
-		clipBoard.setContent(model.saveState());
+		EtatDuModele stateInClipBoard = ClipBoard.getInstance().getContent();
+		if(stateInClipBoard != null) {
+			previousState = modele.sauvegarderEtat();
+			modele.restaurerEtat(stateInClipBoard);
+		}
 	}
 	
 	/**
 	 * 
 	 */
 	public void unexecute() {
-		ClipBoard.getInstance().setContent(previousState);
+		if(previousState != null) {
+			modele.restaurerEtat(previousState);
+		}
 	}
 }

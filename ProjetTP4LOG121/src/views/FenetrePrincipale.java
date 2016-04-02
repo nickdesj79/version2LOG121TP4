@@ -17,7 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import principale.Controller;
+import principale.Controlleur;
 
 
 /**
@@ -28,27 +28,29 @@ public class FenetrePrincipale extends JFrame
 	
 	private static final long serialVersionUID = 11L;
 	
-	private static final int DEFAULT_WIDTH = 750;
-	private static final int DEFAULT_HEIGHT = 500;
+	private static final int WIDTH = 1200;
+	private static final int HEIGHT = 800;
 	
 	private MenuFenetre menu;
-	private JPanel viewsContainer;
+	private JPanel contenant;
 	
-	public FenetrePrincipale(Controller controller){
+	public FenetrePrincipale(Controlleur controller){
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("Default Frame");
-		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		this.setTitle("Laboratoire 04 - LOG121");
+		this.setSize(WIDTH, HEIGHT);
 		this.setLayout(new BorderLayout());
+		
 		
 		menu = new MenuFenetre(controller);
 		this.add(menu, BorderLayout.NORTH);
 		
-		viewsContainer = new JPanel();
-		viewsContainer.setLayout(null);
-		this.add(viewsContainer, BorderLayout.CENTER);
+		contenant = new JPanel();
+		contenant.setLayout(null);
+		this.add(contenant, BorderLayout.CENTER);
 	}
 	
 	public void addToContainer(JComponent view) {
-		viewsContainer.add(view);
+		contenant.add(view);
 	}
 }

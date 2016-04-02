@@ -11,13 +11,11 @@ Historique des modifications
  *******************************************************/
 package models;
 
-public interface Model {
+public interface Modele {
 	
-	public ModelState saveState();
 	
-	public void restoreState(ModelState state);
-	
-	public String serialize();
-	
-	public void unserialize(String state) throws Exception;
+	public String enregistrer();
+	public void restaurerEtat(EtatDuModele state);
+	public EtatDuModele sauvegarderEtat();
+	public void enleverEnregistrement(String state) throws Exception;
 }

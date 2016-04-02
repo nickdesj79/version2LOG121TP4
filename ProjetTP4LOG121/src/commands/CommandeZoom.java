@@ -17,7 +17,7 @@ import models.Perspective;
 /**
  * 
  */
-public class ZoomCommand implements Command {
+public class CommandeZoom implements Commande {
 	
 	private final float baseZoom;
 	private final float zoomFactor;
@@ -28,7 +28,7 @@ public class ZoomCommand implements Command {
 	 * @param perspective perspective sur laquelle appliquer le zoom
 	 * @param unZoom facteur de zoom à appliquer
 	 */
-	public ZoomCommand(Perspective perspective, float unZoom) {
+	public CommandeZoom(Perspective perspective, float unZoom) {
 		laPerspective = perspective;
 		baseZoom = perspective.getZoom();
 		zoomFactor = unZoom;

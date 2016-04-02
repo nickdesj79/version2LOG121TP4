@@ -11,6 +11,6 @@ Historique des modifications
  *******************************************************/
 package models;
 
-public interface ModelState {
+public interface EtatDuModele {
 	
 }

@@ -21,24 +21,12 @@ import javax.imageio.ImageIO;
 
 
 
-/**
- * 
- */
-public class ImageModel extends Observable implements Model {
+public class ImageModel extends Observable implements Modele {
 	
-	/**
-	 * 
-	 */
 	private Image image;
 	
-	/**
-	 * 
-	 */
 	private File imageFile;
 	
-	/**
-	 * 
-	 */
 	public ImageModel(){
 		imageFile = null;
 		image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
@@ -49,7 +37,7 @@ public class ImageModel extends Observable implements Model {
 	 * @param file le fichier à charger
 	 * @throws IOException erreur durant le chargement de l'image
 	 */
-	public void load(File file) throws IOException {
+	public void charger(File file) throws IOException {
 		imageFile = file;
 		if(imageFile == null) {
 			image = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
@@ -68,46 +56,46 @@ public class ImageModel extends Observable implements Model {
 		return image;
 	}
 	
-	public ModelState saveState() {
-		return new ImageModelState();
+	public EtatDuModele sauvegarderEtat() {
+		return new EtatImageModele();
 	}
 	
-	public void restoreState(ModelState state) {
-		if(state instanceof ImageModelState) {
-			ImageModelState imageModelState = (ImageModelState) state;
+	public void restaurerEtat(EtatDuModele state) {
+		if(state instanceof EtatImageModele) {
+			EtatImageModele imageModelState = (EtatImageModele) state;
 			imageModelState.restore();
 			setChanged();
 			notifyObservers();
 		}
 	}
 	
-	public String serialize() {
+	public String enregistrer() {
 		return imageFile.getAbsolutePath();
 	}
 	
-	public void unserialize(String state) throws Exception {
+	public void enleverEnregistrement(String state) throws Exception {
 		if(state == null) {
-			load(null);
+			charger(null);
 		} else if(state.equals("null")) {
-			load(null);
+			charger(null);
 		} else {
-			load(new File(state));
+			charger(new File(state));
 		}
 	}
 	
-	private class ImageModelState implements ModelState {
+	private class EtatImageModele implements EtatDuModele {
 		
-		public File savedFile;
-		public Image savedImage;
+		public File fichierSauvegarder;
+		public Image imageSauvegarder;
 		
-		public ImageModelState() {
-			savedFile = imageFile;
-			savedImage = image;
+		public EtatImageModele() {
+			fichierSauvegarder = imageFile;
+			imageSauvegarder = image;
 		}
 		
 		public void restore() {
-			imageFile = savedFile;
-			image = savedImage;
+			imageFile = fichierSauvegarder;
+			image = imageSauvegarder;
 		}
 	}
 }

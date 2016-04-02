@@ -11,7 +11,7 @@ Historique des modifications
  *******************************************************/
 package principale;
 
-import models.ModelState;
+import models.EtatDuModele;
 
 public class ClipBoard {
 	
@@ -27,19 +27,19 @@ public class ClipBoard {
 		return instance;
 	}
 	
-	private ModelState content;
+	private EtatDuModele content;
 	
 	/**
 	 * Retourne le ModelState(État du model) du ClipBoard
 	 * */
-	public ModelState getContent() {
+	public EtatDuModele getContent() {
 		return content;
 	}
 	
 	/**
 	 * Assigne un ModelState(État du model) au ClibBoard
 	 * */
-	public void setContent(ModelState value) {
+	public void setContent(EtatDuModele value) {
 		content = value;
 	}
 }

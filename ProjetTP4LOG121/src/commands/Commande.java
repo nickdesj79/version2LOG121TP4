@@ -18,7 +18,7 @@ package commands;
  * <!--  end-user-doc  -->
  * @generated
  */
-public  interface Command 
+public  interface Commande 
 {
 	/**
 	 * <!-- begin-user-doc -->

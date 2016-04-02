@@ -21,20 +21,16 @@ import models.ImageModel;
 
 import java.awt.*;
 
-public class ImageView extends JPanel implements Observer {
+@SuppressWarnings("serial")
+public class VueStatique extends JPanel implements Observer {
 	
-	private static final long serialVersionUID = 10L;
 	
 	protected Image image;
 	
-	public ImageView(int unePosX, int unePosY, int uneWidth, int uneHeight) {
-		int posX = unePosX;
-		int posY = unePosY;
-		int width = uneWidth;
-		int height = uneHeight;
+	public VueStatique(int position_x, int position_y, int width, int height) {
 		
 		this.setLayout(null);
-		this.setBounds(posX, posY, width, height);
+		this.setBounds(position_x, position_y, width, height);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		this.setBackground(new Color(220,220,220));

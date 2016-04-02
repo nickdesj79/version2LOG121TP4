@@ -17,7 +17,7 @@ import principale.Coordonnee;
 /**
  * 
  */
-public class TranslationCommand implements Command
+public class CommandeTranslation implements Commande
 {
 	
 	private Coordonnee currentCoo;
@@ -28,7 +28,7 @@ public class TranslationCommand implements Command
 	 * @param perspective perspective sur laquelle appliquer la translation
 	 * @param coordonnee 
 	 */
-	public TranslationCommand(Perspective perspective, Coordonnee deplacement) {
+	public CommandeTranslation(Perspective perspective, Coordonnee deplacement) {
 		unePerspective = perspective;
 		currentCoo = perspective.getPosition();
 		this.deplacement = deplacement;
