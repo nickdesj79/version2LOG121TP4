@@ -9,14 +9,10 @@ Historique des modifications
  *@author Shaun-David Sauro, Gabriel St-Hilaire, Frédéric Gascon
  *@date 2013-11-22
  *******************************************************/
-package commands;
+package Commandes;
 
 import java.util.Stack;
 
-
-/**
- * 
- */
 public class GestionnaireDeCommande
 {
 	

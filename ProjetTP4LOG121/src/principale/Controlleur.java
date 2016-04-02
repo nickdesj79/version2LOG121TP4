@@ -18,14 +18,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.io.IOException;
-
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-
-import commands.*;
-import models.*;
-import views.VueStatique;
-import views.VueDynamique;
+import Commandes.*;
+import modele.*;
+import vue.*;
 
 
 /**

@@ -9,7 +9,7 @@ Historique des modifications
  *@author Shaun-David Sauro, Gabriel St-Hilaire, Frédéric Gascon
  *@date 2013-11-22
  *******************************************************/
-package views;
+package vue;
 
 import java.awt.BorderLayout;
 
@@ -37,7 +37,6 @@ public class FenetrePrincipale extends JFrame
 	public FenetrePrincipale(Controlleur controller){
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("Laboratoire 04 - LOG121");
 		this.setSize(WIDTH, HEIGHT);
 		this.setLayout(new BorderLayout());
 		

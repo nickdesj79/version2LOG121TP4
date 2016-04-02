@@ -1,7 +1,7 @@
 /******************************************************
 Cours:  LOG121
 Projet: Laboratoire 4
-Nom du fichier: PasteEchelle.java
+Nom du fichier: PasteManager.java
 Date créé: 2013-11-22
  *******************************************************
 Historique des modifications
@@ -9,40 +9,45 @@ Historique des modifications
  *@author Shaun-David Sauro, Gabriel St-Hilaire, Frédéric Gascon
  *@date 2013-11-22
  *******************************************************/
-package commands;
+package Commandes;
 
+import modele.EtatDuModele;
+import modele.Modele;
 import principale.ClipBoard;
-import models.Modele;
-import models.EtatDuModele;
 
-public class UndoRedo implements Commande {
-	
-	private Modele model;
+
+/**
+ * 
+ */
+public class CommandeColler implements Commande {
+
+	private Modele modele;
 	private EtatDuModele previousState;
 	
-	public UndoRedo(Modele model){
-		this.model = model;		
-	}
-	
 	/**
-	 * Ceci vas refaire la prochaine commande
+	 * 
+	 */
+	public CommandeColler(Modele model){
+		this.modele = model;
+	}
+
+	/**
+	 * 
 	 */
 	public void execute() {
 		EtatDuModele stateInClipBoard = ClipBoard.getInstance().getContent();
 		if(stateInClipBoard != null) {
-			previousState = model.sauvegarderEtat();
-			model.restaurerEtat(stateInClipBoard);
+			previousState = modele.sauvegarderEtat();
+			modele.restaurerEtat(stateInClipBoard);
 		}
 	}
 	
 	/**
-	 * Ceci annule la dernière commande
+	 * 
 	 */
-	public void unexecute(){
-		EtatDuModele stateInClipBoard = ClipBoard.getInstance().getContent();
-		if(stateInClipBoard != null) {
-			model.restaurerEtat(previousState);
+	public void unexecute() {
+		if(previousState != null) {
+			modele.restaurerEtat(previousState);
 		}
 	}
-	
 }

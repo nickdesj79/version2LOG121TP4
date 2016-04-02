@@ -11,7 +11,7 @@ Historique des modifications
  *******************************************************/
 package principale;
 
-import models.EtatDuModele;
+import modele.EtatDuModele;
 
 public class ClipBoard {
 	

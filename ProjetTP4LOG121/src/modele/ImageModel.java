@@ -9,7 +9,7 @@ Historique des modifications
  *@author Shaun-David Sauro, Gabriel St-Hilaire, Frédéric Gascon
  *@date 2013-11-22
  *******************************************************/
-package models;
+package modele;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;

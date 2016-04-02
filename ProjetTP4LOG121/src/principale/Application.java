@@ -12,9 +12,9 @@ Historique des modifications
 
 package principale;
 
-import views.FenetrePrincipale;
-import views.VueStatique;
-import views.VueDynamique;
+import vue.FenetrePrincipale;
+import vue.VueDynamique;
+import vue.VueStatique;
 
 /**
  * Classe principale

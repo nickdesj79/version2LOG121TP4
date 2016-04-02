@@ -9,13 +9,13 @@ Historique des modifications
  *@author Shaun-David Sauro, Gabriel St-Hilaire, Frédéric Gascon
  *@date 2013-11-22
  *******************************************************/
-package views;
+package vue;
 
 import java.awt.Graphics;
 import java.util.Observable;
 
+import modele.Perspective;
 import principale.Coordonnee;
-import models.Perspective;
 
 
 /**
